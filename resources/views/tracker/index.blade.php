@@ -8,6 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/settings_drawer.css">
     <style>
         :root {
             --bg-color: #0b0f19;
@@ -41,7 +42,7 @@
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            padding: 24px 16px;
+            padding: 24px 16px 110px 16px;
         }
 
         .container {
@@ -438,6 +439,263 @@
             transform: translateY(-2px);
             box-shadow: 0 6px 20px var(--primary-glow);
         }
+
+        .btn-settings-trigger {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #fff;
+            width: 38px;
+            height: 38px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-settings-trigger:hover {
+            background: rgba(99, 102, 241, 0.3);
+            border-color: #6366f1;
+            transform: scale(1.05);
+        }
+
+        /* ===== Responsive Bottom Navigation Bar ===== */
+        .bottom-nav-wrapper {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            z-index: 999;
+            display: flex;
+            justify-content: center;
+            pointer-events: none; /* agar klik di samping tidak terhalang */
+            padding: 0 16px;
+        }
+
+        .bottom-nav {
+            pointer-events: auto;
+            width: 100%;
+            max-width: 520px;
+            background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 8px 12px;
+            box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.7), 0 0 20px rgba(99, 102, 241, 0.15);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Desktop & Tablet: Floating Pill */
+        @media (min-width: 640px) {
+            .bottom-nav-wrapper {
+                bottom: 24px;
+            }
+            .bottom-nav {
+                border-radius: 999px;
+                padding: 8px 24px;
+            }
+        }
+
+        /* Mobile Version: Full Width Bottom Dock */
+        @media (max-width: 639px) {
+            .bottom-nav-wrapper {
+                padding: 0;
+                bottom: 0;
+            }
+            .bottom-nav {
+                max-width: 100%;
+                border-radius: 24px 24px 0 0;
+                border-bottom: none;
+                padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 8px)) 14px;
+            }
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 4px;
+            text-decoration: none;
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: 14px;
+            transition: all 0.2s ease;
+            position: relative;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+        }
+
+        .nav-item svg {
+            width: 22px;
+            height: 22px;
+            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .nav-item:hover {
+            color: #fff;
+        }
+
+        .nav-item:hover svg {
+            transform: translateY(-2px);
+        }
+
+        .nav-item.active {
+            color: #38bdf8;
+        }
+
+        .nav-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            width: 14px;
+            height: 3px;
+            background: #38bdf8;
+            border-radius: 999px;
+            box-shadow: 0 0 8px #38bdf8;
+        }
+
+        /* Center Floating Action Button (FAB) */
+        .nav-fab-container {
+            position: relative;
+            top: -14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .nav-fab {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #6366f1 0%, #ec4899 100%);
+            border: 3px solid #0f172a;
+            box-shadow: 0 6px 20px rgba(236, 72, 153, 0.45);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .nav-fab svg {
+            width: 24px;
+            height: 24px;
+            stroke-width: 2.5;
+            transition: transform 0.25s ease;
+        }
+
+        .nav-fab:hover {
+            transform: scale(1.12) rotate(90deg);
+            box-shadow: 0 8px 25px rgba(236, 72, 153, 0.65);
+        }
+
+        .nav-fab-label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: #fff;
+            margin-top: 2px;
+        }
+
+        /* Stats Modal */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-overlay.open {
+            display: flex;
+        }
+
+        .modal-box {
+            background: #131b2e;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 24px;
+            max-width: 440px;
+            width: 100%;
+            padding: 24px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
+            animation: modalPop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes modalPop {
+            0% { transform: scale(0.92); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+        }
+
+        .modal-title {
+            font-size: 1.15rem;
+            font-weight: 800;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-close {
+            background: rgba(255, 255, 255, 0.08);
+            border: none;
+            color: #fff;
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .stats-grid-modal {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card-mini {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 16px;
+            padding: 14px;
+            text-align: center;
+        }
+
+        .stat-card-mini .val {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #38bdf8;
+            margin-bottom: 4px;
+        }
+
+        .stat-card-mini .lbl {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
@@ -445,18 +703,33 @@
     <div class="container">
         <!-- Top Nav -->
         <header class="top-nav">
-            <a href="/" class="brand-logo">
-                <span class="brand-badge">✨</span>
-                <span>Trackerizy</span>
-            </a>
+            <div style="display: flex; align-items: center; gap: 12px;">
+                <!-- Tombol Navigasi Kiri: Settings & Lifestyle Hub -->
+                <button type="button" class="btn-settings-trigger" onclick="openSettingsDrawer()" title="Settings & Lifestyle Hub" aria-label="Buka Pengaturan">
+                    <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
+                    </svg>
+                </button>
 
-            <a href="/admin" class="admin-link">
-                <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <span>Kelola di Filament</span>
-            </a>
+                <a href="/" class="brand-logo">
+                    <span class="brand-badge">✨</span>
+                    <span>Trackerizy</span>
+                </a>
+            </div>
+
+            <div style="display: flex; align-items: center; gap: 8px;">
+                <button type="button" class="btn-outline-sm" onclick="openWallpaperModal()" title="Ubah Wallpaper" style="padding: 6px 12px; font-size: 0.8rem; border-radius: 12px;">
+                    🖼️ Wallpaper
+                </button>
+
+                <a href="/admin" class="admin-link">
+                    <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                    <span>Kelola</span>
+                </a>
+            </div>
         </header>
 
         <!-- Progress Card -->
@@ -552,7 +825,109 @@
         </section>
     </div>
 
+    <!-- ===== Bottom Navigation Bar (Responsive Mobile to Desktop) ===== -->
+    <div class="bottom-nav-wrapper">
+        <nav class="bottom-nav" aria-label="Navigasi Bawah">
+            <!-- 1. Hari Ini -->
+            <a href="/?date={{ now()->toDateString() }}" class="nav-item {{ request('date') == now()->toDateString() || !request('date') ? 'active' : '' }}" title="Hari Ini">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                </svg>
+                <span>Hari Ini</span>
+            </a>
+
+            <!-- 2. Riwayat / Kalender -->
+            <a href="/calendar" class="nav-item {{ request()->is('calendar*') ? 'active' : '' }}" title="Kalender & Analitik">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+                <span>Kalender</span>
+            </a>
+
+            <!-- 3. Floating Action Button (Tambah Cepat di Tengah) -->
+            <div class="nav-fab-container">
+                <a href="/admin/habits/create" class="nav-fab" title="Tambah Kebiasaan Baru">
+                    <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+                    </svg>
+                </a>
+                <span class="nav-fab-label">Tambah</span>
+            </div>
+
+            <!-- 4. Statistik Ringkas -->
+            <button type="button" class="nav-item" onclick="openStatsModal()" title="Statistik">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                <span>Statistik</span>
+            </button>
+
+            <!-- 5. Filament Admin Panel -->
+            <a href="/admin" class="nav-item" title="Panel Admin Filament">
+                <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+                <span>Kelola</span>
+            </a>
+        </nav>
+    </div>
+
+    <!-- Modal Ringkasan Statistik -->
+    <div class="modal-overlay" id="stats-modal" onclick="closeStatsModal(event)">
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-title">
+                    <span>📊</span>
+                    <span>Ringkasan Performa</span>
+                </div>
+                <button type="button" class="modal-close" onclick="closeStatsModal()">✕</button>
+            </div>
+
+            <div class="stats-grid-modal">
+                <div class="stat-card-mini">
+                    <div class="val">{{ $totalHabits }}</div>
+                    <div class="lbl">Total Kebiasaan Aktif</div>
+                </div>
+                <div class="stat-card-mini">
+                    <div class="val">{{ $completedHabits }}/{{ $totalHabits }}</div>
+                    <div class="lbl">Tuntas Hari Ini</div>
+                </div>
+                <div class="stat-card-mini">
+                    <div class="val">{{ $progressPercent }}%</div>
+                    <div class="lbl">Tingkat Keberhasilan</div>
+                </div>
+                <div class="stat-card-mini">
+                    @php
+                        $maxStreak = $habits->max('current_streak') ?? 0;
+                    @endphp
+                    <div class="val" style="color: #fbbf24;">🔥 {{ $maxStreak }}</div>
+                    <div class="lbl">Streak Tertinggi</div>
+                </div>
+            </div>
+
+            <a href="/admin/habits" class="btn-add-primary" style="width: 100%; justify-content: center;">
+                Buka Detail Lengkap di Filament
+            </a>
+        </div>
+    </div>
+
     <script>
+        function openStatsModal() {
+            document.getElementById('stats-modal').classList.add('open');
+        }
+
+        function closeStatsModal(event) {
+            document.getElementById('stats-modal').classList.remove('open');
+        }
+
+        function scrollToCalendar() {
+            const el = document.querySelector('.calendar-strip');
+            if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+        }
+
         async function handleToggle(event, habitId) {
             event.preventDefault();
             const form = event.currentTarget;
@@ -599,9 +974,12 @@
                 }
             } catch (err) {
                 console.error(err);
-                form.submit(); // fallback if error
+                form.submit();
             }
         }
     </script>
+
+    @include('tracker.partials.settings_drawer')
+    <script src="/js/settings_drawer.js"></script>
 </body>
 </html>
